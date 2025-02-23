@@ -134,20 +134,13 @@ def dashboard():
             user_id = user['id']
 
         if search_query:
-            #cursor.execute("SELECT filename FROM files WHERE user_id = ? AND filename LIKE ?", (user_id, f'%{search_query}%'))
-            unsafe_query = f"SELECT filename FROM files WHERE user_id = {user_id} AND filename LIKE '%{search_query}%'"
-            cursor.executescript(unsafe_query)
+            s_query = f"SELECT filename FROM files WHERE user_id = {user_id} AND filename LIKE '%{search_query}%'"
+            cursor.execute(s_query)
         else:
             cursor.execute("SELECT filename FROM files WHERE user_id = ?", (user_id,))
         files = [row['filename'] for row in cursor.fetchall()]
 
-        # Query files uploaded by this user
-        #query = "SELECT filename FROM files WHERE user_id = ?"
-        #cursor.execute(query, (user_id,))
-        #files = cursor.fetchall()
-
         return render_template('dashboard.html', files=files, search_query=search_query)
-        #return render_template('dashboard.html', files=[file['filename'] for file in files])
     else:
         return redirect(url_for('login'))
 

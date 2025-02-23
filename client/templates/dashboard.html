@@ -80,23 +80,18 @@
                 $(this).fadeIn().delay(3000).fadeOut();
             });
 
-            // jQuery code to handle file deletion
+            // Handle file deletion
             $('.delete-btn').click(function(event) {
-                // Prevent the default form submission behavior
                 event.preventDefault();
                 
-                // Get the filename from the button's data attribute
                 var filename = $(this).data('filename');
                 var $fileItem = $(this).closest('.file-item');
                 
-                // Send an AJAX request to the server to delete the file
                 $.ajax({
                     type: 'POST',
                     url: '/delete/' + filename,
                     success: function(response) {
-                        // Display the flash message in the flash-message div
                         $('#flash-message').text(response.message).removeClass('success error').addClass(response.type).fadeIn().delay(3000).fadeOut();
-                        // Remove the file from the dashboard if it was successfully deleted
                         if (response.type === 'success') {
                             $fileItem.remove();
                         }
@@ -108,23 +103,28 @@
                 });
             });
             
-            // jQuery code to handle adding comments
+            // Handle comment section toggle
             $('.comment-btn').click(function() {
                 var $commentSection = $(this).closest('.file-item').find('.comment-section');
                 $commentSection.slideToggle();
             });
 
             // Handle comment submission
-            $('#comment-form').submit(function(event) {
-                event.preventDefault();
-                var comment = $('#comment-input').val();
-                if (comment) {
-                    $('#comments-list').append('<li>' + comment + '</li>');
-                    $('#comment-input').val('');
-                }
+            $('.file-item').each(function() {
+                var $fileItem = $(this);
+
+                $fileItem.find('.comment-section form').submit(function(event) {
+                    event.preventDefault();
+
+                    var comment = $fileItem.find('.comment-section input').val();
+                    var $commentList = $fileItem.find('#comments-list');
+
+                    if (comment) {
+                        $commentList.append('<li>' + comment + '</li>');
+                        $fileItem.find('.comment-section input').val('');
+                    }
+                });
             });
-
-
         });
 
     </script>
