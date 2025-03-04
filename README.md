@@ -1,6 +1,6 @@
 # ThreatByte
 
-ThreatByte is a vulnerable web application designed to demonstrate some Web Application and API Security risks. It provides a platform to explore and understand common security vulnerabilities in web applications and APIs.
+ThreatByte is a deliberately vulnerable web application designed to demonstrate some Web Application and API Security risks. It provides a platform that aims to represent a simple online file-sharing platform.
 
 ## Requirements
 
@@ -89,27 +89,23 @@ The ThreatByte application aims to represent a simple online sharing platform. C
 - **User Authentication:** Users can sign up, log in, and log out.
 - **Dashboard:** Users have a personalized dashboard to view and manage their uploaded files.
 - **File Upload:** Users can upload files to the application.
+- **File Download:** Users can download files from the application.
 - **Profile Management:** Users can view and edit their profile information.
 
 ## Vulnerabilities
 
-- **Broken Authentication**
-  - Brute-force attacks
-  - Session Management issues
-  - Insufficiently Protected Credentials
-- **Cryptographic Failures**
-- **Injections:**
-  - **SQL Injection**
-  - **Cross-Site Scripting (XSS):**
-    - Reflected
-    - DOM
-    - Stored 
-- **Cross-Site Request Forgery**
-- **Server-Side Request Forgery**
-- **Unrestricted File Upload**
-- **Broken Access Control**
-  - Broken Object Level Authorization - BOLA
-  - Broken Object Property Level Authorization - BOPA
-  - Broken Function Level Authorization - BFLA
-- **Insecure configurations**
-
+- Insecure Configurations
+- Weak or Improper Cryptographic Implementations
+- Lack of Brute-Force Protection
+- Weak Session Management
+- Broken Object Level Authorization (BOLA)
+- Broken Object Property Level Authorization (BOPA)
+- Broken Function Level Authorization (BFLA)
+- Cross-Site Request Forgery (CSRF)
+- SQL Injection
+- Cross-Site Scripting (XSS):
+  - Reflected XSS
+  - Stored XSS
+  - DOM-based XSS
+- Unrestricted File Upload
+- Server-Side Request Forgery (SSRF)

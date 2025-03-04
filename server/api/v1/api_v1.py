@@ -4,7 +4,7 @@ from flask_restx import Api, Resource, fields
 from server import app
 from server.routes import custom_hash
 from db.initialize_db import get_db_connection
-import datetime
+import datetime, requests, os
 from functools import wraps
 import jwt
 from server.config import Config
@@ -280,7 +280,7 @@ class ProfilePicture(Resource):
 
                         # Save the profile picture file
                         filename = str(profile_picture_id) + '.png'
-                        file_path = os.path.join(PROFILE_PICTURES_UPLOAD_FOLDER, filename)
+                        file_path = os.path.join(Config.PROFILE_PICTURES_UPLOAD_FOLDER, filename)
                         with open(file_path, 'wb') as file:
                             file.write(response.content)
                         
