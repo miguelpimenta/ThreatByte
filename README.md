@@ -104,8 +104,8 @@ The ThreatByte application aims to represent a simple online sharing platform. C
 - Cross-Site Request Forgery (CSRF)
 - SQL Injection
 - Cross-Site Scripting (XSS):
-  - Reflected XSS
-  - Stored XSS
-  - DOM-based XSS
+  - Reflected XSS
+  - Stored XSS
+  - DOM-based XSS
 - Unrestricted File Upload
 - Server-Side Request Forgery (SSRF)
