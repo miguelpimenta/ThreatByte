@@ -27,6 +27,16 @@ jobs:
           FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \) | tr '\n' ',')
           echo "source_files=$FILES" >> $GITHUB_ENV
 
+      - name: Run Vorpal with Reviewdog
+        uses: Checkmarx/vorpal-reviewdog-github-action@v1.1.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_path: ${{ env.source_files }}
+          filter_mode: nofilter
+          reporter: github-check
+          level: error
+          fail_on_error: false
+
       - name: Upload SARIF report to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
