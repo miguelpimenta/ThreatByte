@@ -12,6 +12,10 @@ on:
 
 jobs:
   vorpal_analysis:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      actions: read # required for private repos using upload-sarif
+      security-events: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
