@@ -17,12 +17,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Collect all source files
+        id: source-files
+        run: |
+          FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \) | tr '\n' ',')
+          echo "source_files=$FILES" >> $GITHUB_ENV
+
       - name: Run Vorpal with Reviewdog
         uses: Checkmarx/vorpal-reviewdog-github-action@v1.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_path: .
-          filter_mode: nofilter  # Scans the entire repository
+          source_path: ${{ env.source_files }}
+          filter_mode: nofilter
           reporter: github-check
           level: error
           fail_on_error: false
