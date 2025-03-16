@@ -23,12 +23,7 @@ jobs:
           FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \) | tr '\n' ',')
           echo "source_files=$FILES" >> $GITHUB_ENV
 
-      - name: Run Vorpal with SARIF output
-        run: |
-          mkdir -p reports
-          vorpal --format sarif ${{ env.source_files }} > reports/vorpal-results.sarif
-
       - name: Upload SARIF report to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: reports/vorpal-results.sarif
+          sarif_file: result.errorformat
