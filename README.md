@@ -1,90 +1,14 @@
 # ThreatByte
 
-ThreatByte is a deliberately vulnerable web application designed to demonstrate some Web Application and API Security risks. It provides a platform that aims to represent a simple online file-sharing platform.
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![Docker](https://img.shields.io/badge/Docker-Available-blue)](https://www.docker.com/)
 
-## Requirements
+ThreatByte is a deliberately vulnerable web application designed to demonstrate some Web and API security risks. It serves as a learning platform for security professionals and developers to explore common vulnerabilities in a controlled environment.
 
- - Python 3.x (where x is your specific Python version)
- - SQLite
+## 🚀 Features
 
-## Run
-
-To run ThreatByte application locally, you can follow these steps:
-
-1. **Clone the repository:**
-
-   ```
-   git clone https://github.com/anotherik/ThreatByte.git
-   ```
-
-2. **Navigate to the project directory:**
-
-   ```
-   cd threatbyte
-   ```
-
-3. **Create a Virtual Environment**:
-    ```bash
-    python -m venv venv_threatbyte
-    ```
-
-4. **Activate the Virtual Environment**:
-    - On Windows:
-        ```bash
-        venv_threatbyte\Scripts\activate
-        ```
-    - On macOS and Linux:
-        ```bash
-        source venv_threatbyte/bin/activate
-        ```
-        
-5. **Install dependencies:**
-
-   ```
-   pip install -r requirements.txt
-   ```
-
-6. **Initialize the database:**
-
-   ```
-   python db/create_db_tables.py
-   ```
-
-7. **Run the application:**
-
-   ```
-   python run.py
-   ```
-
-8. **Access the application in your web browser at `http://localhost:5000`.**
-
-9. **Deactivate the Virtual Environment**:
-    At the end of testing, deactivate the virtual environment:
-    ```bash
-    deactivate
-    ```
-
-## Docker
-
-Alternatively, you can use Docker to run ThreatByte. Ensure you have Docker installed on your system.
-
-1. **Build the Docker image:**
-
-   ```
-   docker build -t threatbyte .
-   ```
-
-2. **Run the Docker container:**
-
-   ```
-   docker run -p 5000:5000 threatbyte
-   ```
-
-3. **Access the application in your web browser at `http://localhost:5000`.**
-
-## Features
-
-The ThreatByte application aims to represent a simple online sharing platform. Currently it has the following features:
+The ThreatByte application aims to represent a simple online file-storing and sharing platform. It is developed in Python and uses the Flask framework. Currently it has the following features:
 
 - **User Authentication:** Users can sign up, log in, and log out.
 - **Dashboard:** Users have a personalized dashboard to view and manage their uploaded files.
@@ -92,7 +16,7 @@ The ThreatByte application aims to represent a simple online sharing platform. C
 - **File Download:** Users can download files from the application.
 - **Profile Management:** Users can view and edit their profile information.
 
-## Vulnerabilities
+## ⚠️ Vulnerabilities Overview
 
 - Insecure Configurations
 - Weak or Improper Cryptographic Implementations
@@ -110,3 +34,51 @@ The ThreatByte application aims to represent a simple online sharing platform. C
   - DOM-based XSS
 - Unrestricted File Upload
 - Server-Side Request Forgery (SSRF)
+
+## 🛠️ Requirements
+
+- Python 3.x (where x is your specific Python version)
+- SQLite
+
+## 🖥️ Running ThreatByte Locally
+
+```sh
+# Clone repository
+git clone https://github.com/anotherik/ThreatByte.git && cd ThreatByte
+
+# Create and activate virtual environment
+python -m venv venv_threatbyte
+source venv_threatbyte/bin/activate  # macOS/Linux
+venv_threatbyte\Scripts\activate     # Windows
+
+# Install dependencies and setup database
+pip install -r requirements.txt
+python db/create_db_tables.py
+
+# Run the application
+python run.py
+
+# Open in browser: http://localhost:5000
+
+# When finished, deactivate the virtual environment
+deactivate
+```
+
+## 🐳 Running with Docker
+
+```sh
+# Build the Docker image
+docker build -t threatbyte .
+
+# Run the Docker container
+docker run -p 5000:5000 threatbyte
+````
+
+## 🤝 Contributing
+
+Contributions are welcomed! Please fork the repository and create a pull request with your changes. You can also contribute by reporting issues, suggesting improvements, or providing feedback through comments. Whether it's refining documentation, optimizing code, or contributing new vulnerabilities or weaknesses to enhance the application's scope, all contributions are valuable!
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
