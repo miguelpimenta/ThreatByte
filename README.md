@@ -102,6 +102,7 @@ The ThreatByte application aims to represent a simple online sharing platform. C
 - Broken Object Property Level Authorization (BOPA)
 - Broken Function Level Authorization (BFLA)
 - Cross-Site Request Forgery (CSRF)
+- Path Traversal
 - SQL Injection
 - Cross-Site Scripting (XSS):
   - Reflected XSS
