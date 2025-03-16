@@ -15,6 +15,7 @@ jobs:
     permissions:
       contents: read # for actions/checkout to fetch code
       actions: read # required for private repos using upload-sarif
+      security-events: write
     name: Run Semgrep Scan
     runs-on: ubuntu-latest
 
