@@ -1,0 +1,28 @@
+name: Vorpal Full Source Code Scan
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  vorpal_analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Vorpal with Reviewdog
+        uses: Checkmarx/vorpal-reviewdog-github-action@v1.1.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_path: .
+          filter_mode: nofilter  # Scans the entire repository
+          reporter: github-check
+          level: error
+          fail_on_error: false
