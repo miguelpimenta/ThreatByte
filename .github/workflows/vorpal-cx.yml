@@ -23,7 +23,7 @@ jobs:
           FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \))
           echo "SOURCE_FILES=$FILES" >> $GITHUB_ENV
 
-      - name: Debug: Check Collected Files
+      - name: Debug Check Collected Files
         run: |
           echo "Collected files:"
           echo "${{ env.SOURCE_FILES }}"
