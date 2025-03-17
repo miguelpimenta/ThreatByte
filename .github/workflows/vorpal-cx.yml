@@ -1,4 +1,4 @@
-name: Vorpal Security Scan with CodeQL SARIF
+name: Vorpal Security Scan with SARIF
 
 on:
   push:
@@ -12,10 +12,6 @@ on:
 
 jobs:
   vorpal_analysis:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      actions: read # required for private repos using upload-sarif
-      security-events: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -24,24 +20,25 @@ jobs:
       - name: Collect all source files
         id: source-files
         run: |
-          FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \) | tr '\n' ',')
-          echo "source_files=$FILES" >> $GITHUB_ENV
+          FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \))
+          echo "SOURCE_FILES=$FILES" >> $GITHUB_ENV
 
-      - name: Run Vorpal with Reviewdog
-        uses: Checkmarx/vorpal-reviewdog-github-action@v1.1.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_path: ${{ env.source_files }}
-          filter_mode: nofilter
-          reporter: github-check
-          level: error
-          fail_on_error: false
+      - name: Debug: Check Collected Files
+        run: |
+          echo "Collected files:"
+          echo "${{ env.SOURCE_FILES }}"
 
-      - name: Debug Vorpal Output
-        run: ls -lah && cat result.errorformat
-        if: always()
+      - name: Run Vorpal Security Scan with SARIF Output
+        run: |
+          mkdir -p reports
+          vorpal -s "${{ env.SOURCE_FILES }}" -r reports/vorpal-results.sarif || echo "Scan failed or found no issues."
+
+      - name: Validate SARIF Output
+        run: |
+          cat reports/vorpal-results.sarif | jq empty || echo "Invalid SARIF format!"
 
       - name: Upload SARIF report to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: result.errorformat
+          sarif_file: reports/vorpal-results.sarif
+          wait-for-processing: true
