@@ -35,10 +35,14 @@ jobs:
           COUNT=1
           for FILE in $FILES; do
             echo "Scanning: $FILE"
+
+            # Remove leading './' to get the correct path inside the container
+            FILE_CLEANED=$(echo "$FILE" | sed 's|^\./||')
+
             docker run --rm \
-              -v $(pwd)/vorpal_scan:/app/vorpal_scan \
+              -v $(pwd)/vorpal_scan:/app \
               checkmarx/vorpal-cli:1.0.116 \
-              -s /app/$FILE -r /app/vorpal_scan/vorpal-results-$COUNT.sarif || true
+              -s "/app/$FILE_CLEANED" -r "/app/vorpal-results-$COUNT.sarif" || true
 
             COUNT=$((COUNT+1))
           done
