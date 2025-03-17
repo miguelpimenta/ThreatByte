@@ -48,10 +48,17 @@ jobs:
               -s /app/$FILE -r /app/vorpal_scan/vorpal-results.sarif || true
           done
 
-      - name: Move SARIF Results to Root Directory
-        run: mv vorpal_scan/vorpal-results.sarif .
+      - name: Show SARIF Results (Debug)
+        run: |
+          if [ -f vorpal_scan/vorpal-results.sarif ]; then
+            echo "SARIF results:"
+            cat vorpal_scan/vorpal-results.sarif
+          else
+            echo "No SARIF file found."
+            exit 0  # Avoids workflow failure
+          fi
 
       - name: Upload SARIF results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: vorpal-results.sarif
+          sarif_file: vorpal_scan/vorpal-results.sarif
