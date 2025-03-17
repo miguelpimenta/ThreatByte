@@ -35,9 +35,9 @@ jobs:
       - name: Run Vorpal Security Scan Inside the Container
         run: |
           docker run --rm \
-            -v $(pwd)/vorpal_scan:/app \
+            -v $(pwd)/vorpal_scan:/app/vorpal_scan \
             checkmarx/vorpal-cli:1.0.116 \
-            -s /app -r vorpal-results.sarif
+            -s /app/vorpal_scan -r vorpal-results.sarif
 
       - name: Move SARIF Results to Root Directory
         run: mv vorpal_scan/vorpal-results.sarif .
