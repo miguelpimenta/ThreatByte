@@ -22,43 +22,38 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Debug - List Repository Files
-        run: ls -R
-
-      - name: Find and Copy Files into a Temporary Directory
+      - name: Find Files and Run Vorpal Security Scan
         run: |
-          mkdir -p vorpal_scan
-          find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \) -exec cp --parents {} vorpal_scan/ \;
-          ls -R vorpal_scan  # Debug to ensure files are copied
+          mkdir -p vorpal_scan results
+          FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \))
 
-      - name: Run Vorpal Security Scan for Each File
-        run: |
-          FILES=$(find vorpal_scan -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \))
-          
           if [ -z "$FILES" ]; then
             echo "No supported source files found. Exiting."
             exit 0
           fi
 
+          COUNT=1
           for FILE in $FILES; do
             echo "Scanning: $FILE"
             docker run --rm \
               -v $(pwd)/vorpal_scan:/app/vorpal_scan \
               checkmarx/vorpal-cli:1.0.116 \
-              -s /app/$FILE -r /app/vorpal_scan/vorpal-results.sarif || true
+              -s /app/$FILE -r /app/vorpal_scan/vorpal-results-$COUNT.sarif || true
+
+            COUNT=$((COUNT+1))
           done
 
-      - name: Show SARIF Results (Debug)
+      - name: Merge SARIF Files
         run: |
-          if [ -f vorpal_scan/vorpal-results.sarif ]; then
-            echo "SARIF results:"
-            cat vorpal_scan/vorpal-results.sarif
-          else
-            echo "No SARIF file found."
-            exit 0  # Avoids workflow failure
-          fi
+          echo '{"version": "2.1.0", "runs": []}' > merged-results.sarif
+          for FILE in vorpal_scan/vorpal-results-*.sarif; do
+            jq '.runs |= . + input.runs' merged-results.sarif "$FILE" > temp.sarif && mv temp.sarif merged-results.sarif
+          done
 
-      - name: Upload SARIF results to GitHub Code Scanning
+      - name: Show Merged SARIF Results (Debug)
+        run: cat merged-results.sarif
+
+      - name: Upload Merged SARIF Results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: vorpal_scan/vorpal-results.sarif
+          sarif_file: merged-results.sarif
