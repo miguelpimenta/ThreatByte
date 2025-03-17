@@ -24,7 +24,6 @@ jobs:
       - name: Run Vorpal Security Scan
         run: |
           docker run --rm \
-            -v $(pwd):/app \
             checkmarx/vorpal-cli:1.0.116 \
             -s /app -r /app/vorpal-results.sarif
 
