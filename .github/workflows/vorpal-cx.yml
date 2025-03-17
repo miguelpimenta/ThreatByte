@@ -20,7 +20,7 @@ jobs:
       - name: Collect all source files
         id: source-files
         run: |
-          FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \))
+          FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \) -print0 | xargs -0 echo)
           echo "SOURCE_FILES=$FILES" >> $GITHUB_ENV
 
       - name: Debug Check Collected Files
