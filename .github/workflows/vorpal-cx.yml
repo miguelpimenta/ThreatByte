@@ -30,7 +30,6 @@ jobs:
           fi
 
           docker run --rm \
-            -v $(pwd):/app \
             checkmarx/vorpal-cli:1.0.116 \
             -s $FILES -r vorpal-results.sarif
 
