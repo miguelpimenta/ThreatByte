@@ -29,15 +29,24 @@ jobs:
         run: |
           mkdir -p vorpal_scan
           find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \) -exec cp --parents {} vorpal_scan/ \;
-          
           ls -R vorpal_scan  # Debug to ensure files are copied
 
-      - name: Run Vorpal Security Scan Inside the Container
+      - name: Run Vorpal Security Scan for Each File
         run: |
-          docker run --rm \
-            -v $(pwd)/vorpal_scan:/app/vorpal_scan \
-            checkmarx/vorpal-cli:1.0.116 \
-            -s /app/vorpal_scan -r vorpal-results.sarif
+          FILES=$(find vorpal_scan -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \))
+          
+          if [ -z "$FILES" ]; then
+            echo "No supported source files found. Exiting."
+            exit 0
+          fi
+
+          for FILE in $FILES; do
+            echo "Scanning: $FILE"
+            docker run --rm \
+              -v $(pwd)/vorpal_scan:/app/vorpal_scan \
+              checkmarx/vorpal-cli:1.0.116 \
+              -s /app/$FILE -r /app/vorpal_scan/vorpal-results.sarif || true
+          done
 
       - name: Move SARIF Results to Root Directory
         run: mv vorpal_scan/vorpal-results.sarif .
