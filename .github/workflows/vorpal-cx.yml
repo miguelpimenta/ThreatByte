@@ -21,17 +21,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Collect all source files
-        id: source-files
-        run: |
-          FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \) | tr '\n' ',')
-          echo "source_files=$FILES" >> $GITHUB_ENV
-
       - name: Run Vorpal Security Scan
         run: |
           docker run --rm \
             checkmarx/vorpal-cli:1.0.116 \
-            -s ${{ env.source_files }} -r /app/vorpal-results.sarif
+            -s . -r /app/vorpal-results.sarif
 
       - name: Upload SARIF results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
