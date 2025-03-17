@@ -37,6 +37,10 @@ jobs:
           level: error
           fail_on_error: false
 
+      - name: Debug Vorpal Output
+        run: ls -lah && cat result.errorformat
+        if: always()
+
       - name: Upload SARIF report to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
