@@ -22,17 +22,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Find Files and Run Vorpal Scan
-        run: |
-          FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \))
-          if [ -z "$FILES" ]; then
-            echo "No supported files found. Exiting."
-            exit 0
-          fi
+      - name: Debug - List Repository Files
+        run: ls -R
 
+      - name: Find and Copy Files into a Temporary Directory
+        run: |
+          mkdir -p vorpal_scan
+          find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \) -exec cp --parents {} vorpal_scan/ \;
+          
+          ls -R vorpal_scan  # Debug to ensure files are copied
+
+      - name: Run Vorpal Security Scan Inside the Container
+        run: |
           docker run --rm \
+            -v $(pwd)/vorpal_scan:/ \
             checkmarx/vorpal-cli:1.0.116 \
-            -s $FILES -r vorpal-results.sarif
+            -s /app -r vorpal-results.sarif
+
+      - name: Move SARIF Results to Root Directory
+        run: mv vorpal_scan/vorpal-results.sarif .
 
       - name: Upload SARIF results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
