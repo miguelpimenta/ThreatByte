@@ -40,9 +40,9 @@ jobs:
             FILE_CLEANED=$(echo "$FILE" | sed 's|^\./||')
 
             docker run --rm \
-              -v $(pwd)/vorpal_scan:/app/vorpal_scan \
+              -v $(pwd)/vorpal_scan:/vorpal_scan \
               checkmarx/vorpal-cli:1.0.116 \
-              -s "/app/vorpal_scan/$FILE_CLEANED" -r "/app/vorpal_scan/vorpal-results-$COUNT.sarif" || true
+              -s "/vorpal_scan/$FILE_CLEANED" -r "/vorpal_scan/vorpal-results-$COUNT.sarif" || true
 
             COUNT=$((COUNT+1))
           done
