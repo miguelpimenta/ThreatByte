@@ -21,11 +21,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Run Vorpal Security Scan
+      - name: Find Files and Run Vorpal Scan
         run: |
+          FILES=$(find . -type f \( -name "*.cs" -o -name "*.java" -o -name "*.js" -o -name "*.py" \))
+          if [ -z "$FILES" ]; then
+            echo "No supported files found. Exiting."
+            exit 0
+          fi
+
           docker run --rm \
+            -v $(pwd):/app \
             checkmarx/vorpal-cli:1.0.116 \
-            -s . -r /app/vorpal-results.sarif
+            -s $FILES -r vorpal-results.sarif
 
       - name: Upload SARIF results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
