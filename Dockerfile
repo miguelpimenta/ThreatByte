@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM python:3.13.3-alpine
 # Set the working directory in the container
 WORKDIR /app
 # Copy the dependencies file to the working directory
