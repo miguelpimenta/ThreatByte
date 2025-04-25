@@ -64,14 +64,18 @@ python run.py
 deactivate
 ```
 
-## 🐳 Running with Docker
+## 📦 Running with Containers (Docker or Podman)
 
 ```sh
-# Build the Docker image
+# Build the image
 docker build -t threatbyte .
+# or (with Podman)
+podman build -t threatbyte .
 
-# Run the Docker container
+# Run the container
 docker run -p 5000:5000 threatbyte
+# or (with Podman)
+podman run -p 5000:5000 threatbyte
 ````
 
 ## 🤝 Contributing
